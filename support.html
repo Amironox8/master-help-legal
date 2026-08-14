@@ -144,11 +144,11 @@
 
 <script src="assets/lang.js"></script>
 <script>
-  // Адрес разработчика собирается в рантайме, чтобы его не выгребали спам-краулеры
-  // из исходника страницы. После активации формы в FormSubmit сюда можно подставить
-  // выданный алиас: "https://formsubmit.co/ajax/<алиас>".
+  // Алиас FormSubmit — почта разработчика в эндпоинте не фигурирует.
+  var FORM_ENDPOINT = "https://formsubmit.co/ajax/2781e2a77d0befb9a4272d4a1a5d8d3d";
+  // Запасной контакт на случай сбоя отправки: собирается в рантайме,
+  // чтобы спам-краулеры не выгребали адрес из исходника страницы.
   var CONTACT_EMAIL = ["sweatyawe", "gmail.com"].join("@");
-  var FORM_ENDPOINT = "https://formsubmit.co/ajax/" + CONTACT_EMAIL;
 
   var form = document.getElementById("feedback");
   var button = document.getElementById("submitButton");
