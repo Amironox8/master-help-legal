@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MasterHelp — Обратная связь / Support</title>
+<meta name="description" content="Support and feedback page for the MasterHelp iOS app." />
+<link rel="stylesheet" href="assets/base.css" />
+</head>
+<body data-lang="ru">
+
+<header class="topbar">
+  <a class="brand" href="index.html"><b>MasterHelp</b> · support</a>
+  <nav>
+    <a href="privacy.html" data-l="ru">Конфиденциальность</a>
+    <a href="privacy.html" data-l="en">Privacy</a>
+    <a href="support.html" aria-current="page" data-l="ru">Поддержка</a>
+    <a href="support.html" aria-current="page" data-l="en">Support</a>
+    <span class="lang">
+      <button type="button" data-lang="ru">RU</button>
+      <button type="button" data-lang="en">EN</button>
+    </span>
+  </nav>
+</header>
+
+<main>
+
+<div data-l="ru">
+  <p class="eyebrow">Обратная связь</p>
+  <h1>Напишите разработчику</h1>
+  <p class="lead">Нашли ошибку в кодах, не хватает бренда или модели, не работает подписка — расскажите. Каждое письмо читает живой человек.</p>
+  <p class="meta">Почта: <a href="mailto:sweatyawe@gmail.com">sweatyawe@gmail.com</a> · Ответ обычно в течение 2–3 рабочих дней</p>
+</div>
+
+<div data-l="en">
+  <p class="eyebrow">Feedback</p>
+  <h1>Write to the developer</h1>
+  <p class="lead">Found a wrong error code, missing a brand or model, having trouble with a subscription — tell us. Every message is read by a human.</p>
+  <p class="meta">E-mail: <a href="mailto:sweatyawe@gmail.com">sweatyawe@gmail.com</a> · Typical reply time 2–3 business days</p>
+</div>
+
+<form id="feedback" class="note" novalidate>
+  <div class="field">
+    <label for="topic" data-l="ru">Тема обращения</label>
+    <label for="topic" data-l="en">Topic</label>
+    <select id="topic">
+      <option value="Ошибка в справочнике / Wrong or missing error code">Ошибка в справочнике · Wrong or missing error code</option>
+      <option value="Запрос бренда или модели / Brand or model request">Нужен бренд или модель · Brand or model request</option>
+      <option value="Подписка и оплата / Subscription and billing">Подписка и оплата · Subscription and billing</option>
+      <option value="Работа приложения / App issue">Приложение работает неправильно · App issue</option>
+      <option value="Другое / Other">Другое · Other</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="device" data-l="ru">Техника, версия iOS, версия приложения (необязательно)</label>
+    <label for="device" data-l="en">Appliance, iOS version, app version (optional)</label>
+    <input id="device" type="text" placeholder="Bosch WAT24440, iOS 18.5, MasterHelp 1.0" />
+  </div>
+
+  <div class="field">
+    <label for="message" data-l="ru">Сообщение</label>
+    <label for="message" data-l="en">Message</label>
+    <textarea id="message" placeholder="..."></textarea>
+  </div>
+
+  <button class="btn" type="submit" data-l="ru">Открыть письмо в почте</button>
+  <button class="btn" type="submit" data-l="en">Compose e-mail</button>
+
+  <p class="meta" data-l="ru">Кнопка откроет ваш почтовый клиент с уже заполненным письмом. Форма ничего не отправляет сама и не сохраняет введённый текст.</p>
+  <p class="meta" data-l="en">The button opens your mail app with the message pre-filled. The form sends nothing on its own and stores nothing.</p>
+</form>
+
+<div data-l="ru">
+  <section class="doc">
+    <h2><span class="num">01</span>Подписка: восстановление покупок</h2>
+    <p>Если доступ пропал после переустановки или смены устройства, откройте экран подписки в приложении и нажмите «Восстановить покупки», войдя в тот же Apple ID, с которого была покупка.</p>
+  </section>
+
+  <section class="doc">
+    <h2><span class="num">02</span>Отмена подписки</h2>
+    <p>Подписка отменяется на стороне Apple: <a href="https://apps.apple.com/account/subscriptions" target="_blank" rel="noopener">apps.apple.com/account/subscriptions</a>. Разработчик не может отменить её за вас. Доступ сохраняется до конца оплаченного периода.</p>
+  </section>
+
+  <section class="doc">
+    <h2><span class="num">03</span>Возврат средств</h2>
+    <p>Возвраты обрабатывает Apple: <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener">reportaproblem.apple.com</a>. Если решение Apple вас не устроило, напишите нам — постараемся помочь.</p>
+  </section>
+
+  <section class="doc">
+    <h2><span class="num">04</span>Нашли неточность в справочнике?</h2>
+    <p>Это самая полезная обратная связь. Укажите бренд, модель, код ошибки и то, как было на самом деле — материал поправим в ближайшем обновлении. Материалы приложения носят справочный характер: работы с техникой под напряжением выполняйте с соблюдением техники безопасности.</p>
+  </section>
+</div>
+
+<div data-l="en">
+  <section class="doc">
+    <h2><span class="num">01</span>Restoring purchases</h2>
+    <p>If access disappeared after reinstalling or switching devices, open the subscription screen in the app and tap “Restore purchases” while signed in with the Apple ID used for the purchase.</p>
+  </section>
+
+  <section class="doc">
+    <h2><span class="num">02</span>Cancelling a subscription</h2>
+    <p>Subscriptions are cancelled on Apple's side: <a href="https://apps.apple.com/account/subscriptions" target="_blank" rel="noopener">apps.apple.com/account/subscriptions</a>. The developer cannot cancel it for you. Access remains until the paid period ends.</p>
+  </section>
+
+  <section class="doc">
+    <h2><span class="num">03</span>Refunds</h2>
+    <p>Refunds are handled by Apple at <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener">reportaproblem.apple.com</a>. If Apple's decision does not work for you, write to us and we will try to help.</p>
+  </section>
+
+  <section class="doc">
+    <h2><span class="num">04</span>Spotted a mistake in the reference data?</h2>
+    <p>That is the most valuable feedback we get. Send the brand, model, error code and what the correct behaviour was — we will fix it in the next update. The content is reference material: always follow proper safety practice when working on live equipment.</p>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <hr />
+  <p data-l="ru">MasterHelp · <a href="index.html">Главная</a> · <a href="privacy.html">Политика конфиденциальности</a> · <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Условия использования (Apple EULA)</a></p>
+  <p data-l="en">MasterHelp · <a href="index.html">Home</a> · <a href="privacy.html">Privacy Policy</a> · <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Terms of Use (Apple EULA)</a></p>
+</footer>
+
+<script src="assets/lang.js"></script>
+<script>
+  document.getElementById("feedback").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    var topic = document.getElementById("topic").value;
+    var device = document.getElementById("device").value.trim();
+    var message = document.getElementById("message").value.trim();
+    var isRussian = document.body.getAttribute("data-lang") === "ru";
+    var deviceLine = device
+      ? (isRussian ? "Устройство: " : "Device: ") + device + "\n\n"
+      : "";
+
+    var mailto = "mailto:sweatyawe@gmail.com"
+      + "?subject=" + encodeURIComponent("MasterHelp — " + topic)
+      + "&body=" + encodeURIComponent(deviceLine + message);
+
+    window.location.href = mailto;
+  });
+</script>
+</body>
+</html>
