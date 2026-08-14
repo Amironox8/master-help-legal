@@ -29,21 +29,21 @@
   <p class="eyebrow">Обратная связь</p>
   <h1>Напишите разработчику</h1>
   <p class="lead">Нашли ошибку в кодах, не хватает бренда или модели, не работает подписка — расскажите. Каждое письмо читает живой человек.</p>
-  <p class="meta">Почта: <a href="mailto:sweatyawe@gmail.com">sweatyawe@gmail.com</a> · Ответ обычно в течение 2–3 рабочих дней</p>
+  <p class="meta">Почта: <a href="mailto:sweatyawe@gmail.com">sweatyawe@gmail.com</a></p>
 </div>
 
 <div data-l="en">
   <p class="eyebrow">Feedback</p>
   <h1>Write to the developer</h1>
   <p class="lead">Found a wrong error code, missing a brand or model, having trouble with a subscription — tell us. Every message is read by a human.</p>
-  <p class="meta">E-mail: <a href="mailto:sweatyawe@gmail.com">sweatyawe@gmail.com</a> · Typical reply time 2–3 business days</p>
+  <p class="meta">E-mail: <a href="mailto:sweatyawe@gmail.com">sweatyawe@gmail.com</a></p>
 </div>
 
 <form id="feedback" class="note" novalidate>
   <div class="field">
     <label for="topic" data-l="ru">Тема обращения</label>
     <label for="topic" data-l="en">Topic</label>
-    <select id="topic">
+    <select id="topic" name="topic" required>
       <option value="Ошибка в справочнике / Wrong or missing error code">Ошибка в справочнике · Wrong or missing error code</option>
       <option value="Запрос бренда или модели / Brand or model request">Нужен бренд или модель · Brand or model request</option>
       <option value="Подписка и оплата / Subscription and billing">Подписка и оплата · Subscription and billing</option>
@@ -53,22 +53,41 @@
   </div>
 
   <div class="field">
-    <label for="device" data-l="ru">Техника, версия iOS, версия приложения (необязательно)</label>
-    <label for="device" data-l="en">Appliance, iOS version, app version (optional)</label>
-    <input id="device" type="text" placeholder="Bosch WAT24440, iOS 18.5, MasterHelp 1.0" />
+    <label for="email" data-l="ru">Ваш e-mail для ответа</label>
+    <label for="email" data-l="en">Your e-mail for the reply</label>
+    <input id="email" name="email" type="email" required autocomplete="email" inputmode="email" placeholder="master@example.com" />
   </div>
 
   <div class="field">
     <label for="message" data-l="ru">Сообщение</label>
     <label for="message" data-l="en">Message</label>
-    <textarea id="message" placeholder="..."></textarea>
+    <textarea id="message" name="message" required placeholder="..."></textarea>
   </div>
 
-  <button class="btn" type="submit" data-l="ru">Открыть письмо в почте</button>
-  <button class="btn" type="submit" data-l="en">Compose e-mail</button>
+  <div class="honeypot" aria-hidden="true">
+    <label for="_honey">Leave this field empty</label>
+    <input id="_honey" name="_honey" type="text" tabindex="-1" autocomplete="off" />
+  </div>
 
-  <p class="meta" data-l="ru">Кнопка откроет ваш почтовый клиент с уже заполненным письмом. Форма ничего не отправляет сама и не сохраняет введённый текст.</p>
-  <p class="meta" data-l="en">The button opens your mail app with the message pre-filled. The form sends nothing on its own and stores nothing.</p>
+  <button class="btn" type="submit" id="submitButton">
+    <span class="label-idle" data-l="ru">Отправить сообщение</span>
+    <span class="label-idle" data-l="en">Send message</span>
+    <span class="label-sending" data-l="ru">Отправляем…</span>
+    <span class="label-sending" data-l="en">Sending…</span>
+  </button>
+
+  <p class="status status-ok" id="statusOk" role="status" hidden>
+    <span data-l="ru">Письмо отправлено. Ответим на указанный e-mail.</span>
+    <span data-l="en">Message sent. We will reply to the e-mail you provided.</span>
+  </p>
+
+  <p class="status status-error" id="statusError" role="alert" hidden>
+    <span data-l="ru">Отправить не получилось. Напишите напрямую: <a class="fallback-mail" href="#">почта разработчика</a>.</span>
+    <span data-l="en">Sending failed. Please write directly: <a class="fallback-mail" href="#">developer's e-mail</a>.</span>
+  </p>
+
+  <p class="meta" data-l="ru">Отправку писем обрабатывает сервис FormSubmit: указанный e-mail и текст обращения уходят разработчику через него.</p>
+  <p class="meta" data-l="en">Delivery is handled by the FormSubmit service: your e-mail and message are forwarded to the developer through it.</p>
 </form>
 
 <div data-l="ru">
@@ -125,22 +144,73 @@
 
 <script src="assets/lang.js"></script>
 <script>
-  document.getElementById("feedback").addEventListener("submit", function (event) {
+  // Адрес разработчика собирается в рантайме, чтобы его не выгребали спам-краулеры
+  // из исходника страницы. После активации формы в FormSubmit сюда можно подставить
+  // выданный алиас: "https://formsubmit.co/ajax/<алиас>".
+  var CONTACT_EMAIL = ["sweatyawe", "gmail.com"].join("@");
+  var FORM_ENDPOINT = "https://formsubmit.co/ajax/" + CONTACT_EMAIL;
+
+  var form = document.getElementById("feedback");
+  var button = document.getElementById("submitButton");
+  var statusOk = document.getElementById("statusOk");
+  var statusError = document.getElementById("statusError");
+  var fallbackLinks = document.querySelectorAll(".fallback-mail");
+
+  for (var i = 0; i < fallbackLinks.length; i++) {
+    fallbackLinks[i].href = "mailto:" + CONTACT_EMAIL;
+    fallbackLinks[i].textContent = CONTACT_EMAIL;
+  }
+
+  form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    var topic = document.getElementById("topic").value;
-    var device = document.getElementById("device").value.trim();
-    var message = document.getElementById("message").value.trim();
-    var isRussian = document.body.getAttribute("data-lang") === "ru";
-    var deviceLine = device
-      ? (isRussian ? "Устройство: " : "Device: ") + device + "\n\n"
-      : "";
+    statusOk.hidden = true;
+    statusError.hidden = true;
 
-    var mailto = "mailto:sweatyawe@gmail.com"
-      + "?subject=" + encodeURIComponent("MasterHelp — " + topic)
-      + "&body=" + encodeURIComponent(deviceLine + message);
+    if (!form.reportValidity()) {
+      return;
+    }
 
-    window.location.href = mailto;
+    var topic = form.topic.value;
+    var payload = {
+      _subject: "MasterHelp — " + topic,
+      _template: "table",
+      _captcha: "false",
+      _honey: form._honey.value,
+      topic: topic,
+      email: form.email.value.trim(),
+      message: form.message.value.trim()
+    };
+
+    button.disabled = true;
+    button.classList.add("is-sending");
+
+    fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("HTTP " + response.status);
+        }
+
+        return response.json();
+      })
+      .then(function () {
+        form.reset();
+        statusOk.hidden = false;
+      })
+      .catch(function () {
+        statusError.hidden = false;
+      })
+      .finally(function () {
+        button.disabled = false;
+        button.classList.remove("is-sending");
+      });
   });
 </script>
 </body>
