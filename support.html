@@ -29,14 +29,14 @@
   <p class="eyebrow">Обратная связь</p>
   <h1>Напишите разработчику</h1>
   <p class="lead">Нашли ошибку в кодах, не хватает бренда или модели, не работает подписка — расскажите. Каждое письмо читает живой человек.</p>
-  <p class="meta">Почта: <a href="mailto:sweatyawe@gmail.com">sweatyawe@gmail.com</a></p>
+  <p class="meta">Заполните форму ниже — ответ придёт на указанный вами e-mail.</p>
 </div>
 
 <div data-l="en">
   <p class="eyebrow">Feedback</p>
   <h1>Write to the developer</h1>
   <p class="lead">Found a wrong error code, missing a brand or model, having trouble with a subscription — tell us. Every message is read by a human.</p>
-  <p class="meta">E-mail: <a href="mailto:sweatyawe@gmail.com">sweatyawe@gmail.com</a></p>
+  <p class="meta">Fill in the form below — the reply will go to the e-mail you provide.</p>
 </div>
 
 <form id="feedback" class="note" novalidate>
@@ -64,7 +64,7 @@
     <textarea id="message" name="message" required placeholder="..."></textarea>
   </div>
 
-  <div class="honeypot" aria-hidden="true">
+  <div class="honeypot" aria-hidden="true" style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;">
     <label for="_honey">Leave this field empty</label>
     <input id="_honey" name="_honey" type="text" tabindex="-1" autocomplete="off" />
   </div>
@@ -72,8 +72,8 @@
   <button class="btn" type="submit" id="submitButton">
     <span class="label-idle" data-l="ru">Отправить сообщение</span>
     <span class="label-idle" data-l="en">Send message</span>
-    <span class="label-sending" data-l="ru">Отправляем…</span>
-    <span class="label-sending" data-l="en">Sending…</span>
+    <span class="label-sending" data-l="ru" style="display: none;">Отправляем…</span>
+    <span class="label-sending" data-l="en" style="display: none;">Sending…</span>
   </button>
 
   <p class="status status-ok" id="statusOk" role="status" hidden>
@@ -155,10 +155,28 @@
   var statusOk = document.getElementById("statusOk");
   var statusError = document.getElementById("statusError");
   var fallbackLinks = document.querySelectorAll(".fallback-mail");
+  var idleLabels = button.querySelectorAll(".label-idle");
+  var sendingLabels = button.querySelectorAll(".label-sending");
 
   for (var i = 0; i < fallbackLinks.length; i++) {
     fallbackLinks[i].href = "mailto:" + CONTACT_EMAIL;
     fallbackLinks[i].textContent = CONTACT_EMAIL;
+  }
+
+  // Переключаем подпись кнопки инлайновым стилем: так она остаётся корректной,
+  // даже если стили страницы не подгрузились.
+  function setSending(isSending) {
+    var index;
+
+    for (index = 0; index < idleLabels.length; index++) {
+      idleLabels[index].style.display = isSending ? "none" : "";
+    }
+
+    for (index = 0; index < sendingLabels.length; index++) {
+      sendingLabels[index].style.display = isSending ? "" : "none";
+    }
+
+    button.disabled = isSending;
   }
 
   form.addEventListener("submit", function (event) {
@@ -182,8 +200,7 @@
       message: form.message.value.trim()
     };
 
-    button.disabled = true;
-    button.classList.add("is-sending");
+    setSending(true);
 
     fetch(FORM_ENDPOINT, {
       method: "POST",
@@ -208,8 +225,7 @@
         statusError.hidden = false;
       })
       .finally(function () {
-        button.disabled = false;
-        button.classList.remove("is-sending");
+        setSending(false);
       });
   });
 </script>
